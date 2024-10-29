@@ -1,0 +1,60 @@
+import pygame
+import sys
+
+# Initialize Pygame
+pygame.init()
+
+# Constants
+WIDTH, HEIGHT = 800, 600
+BACKGROUND_COLOR = (0, 0, 0)
+FPS = 60
+
+# Create the screen
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Space Game with Pause Menu")
+
+# Load background image
+background_image = pygame.image.load("space_background.jpg")  # Replace with your image path
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
+
+# Fonts
+font = pygame.font.Font(None, 74)
+pause_font = pygame.font.Font(None, 48)
+
+# Game loop control
+running = True
+paused = False
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:  # Press 'P' to toggle pause
+                paused = not paused
+
+    if not paused:
+        # Game logic goes here
+        screen.blit(background_image, (0, 0))
+        # Draw game elements
+
+    else:
+        # Pause Menu
+        screen.blit(background_image, (0, 0))  # Show background even when paused
+        pause_text = pause_font.render("Paused", True, (255, 255, 255))
+        resume_text = pause_font.render("Press 'P' to Resume", True, (255, 255, 255))
+        exit_text = pause_font.render("Press 'Q' to Quit", True, (255, 255, 255))
+
+        screen.blit(pause_text, (WIDTH // 2 - pause_text.get_width() // 2, HEIGHT // 2 - 40))
+        screen.blit(resume_text, (WIDTH // 2 - resume_text.get_width() // 2, HEIGHT // 2 + 10))
+        screen.blit(exit_text, (WIDTH // 2 - exit_text.get_width() // 2, HEIGHT // 2 + 60))
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:  # Press 'Q' to quit
+                running = False
+
+    pygame.display.flip()
+    pygame.time.Clock().tick(FPS)
+
+pygame.quit()
+sys.exit()
